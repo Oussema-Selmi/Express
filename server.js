@@ -2,14 +2,27 @@ const express = require('express')
 const path = require('path')
 
 const app = express()
+const date=new Date ();
+const day = date.getDay();
+const hour=date.getHours();
 
-// app.get('/', (req, res)=>{
-//   // res.send('hello')
-//   res.sendFile(__dirname + '/public/home.html')
-// })
+const logger = (req , res , next)=>{
+  if ((day!= 6||7) && hour>=9 && hour <17){
+    next();
+  }else{
+    res.send("this website is closed")
+  }
+}
+app.use(logger);
+
+
 app.use(express.static(__dirname + '/public'))
 
+
+
+
 const port = 4000;
+
 
 app.listen(port, (err) => {
     err
@@ -18,17 +31,4 @@ app.listen(port, (err) => {
   });
   
 
-  // app.get('/',(req,res)=>{
-  //   res.sendfile(__dirname + '/public/home.html');
-  // })
-  //   app.get('/contact',(req,res)=>{
-  //   res.sendfile(__dirname + '/public/contact.html');
-  // })
-  
-  //   app.get('/services',(req,res)=>{
-  //   res.sendfile(__dirname + '/public/services.html');
-  // })
-  // app.use(express.static(path.join(__dirname, 'public')));
-  // app.use(express.static('public'));
-
-  // app.use(express.static(__dirname + '/public'));
+  app.use(express.static(__dirname + '/public'));
